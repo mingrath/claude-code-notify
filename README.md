@@ -283,6 +283,10 @@ ls -la ~/.claude/sounds/
 - Check iPhone → Watch app → Notifications → ntfy is enabled
 - Apple Watch only shows notifications when iPhone is locked
 
+## Related
+
+- **[claude-code-statusline](https://github.com/mingrath/claude-code-statusline)** — Custom statusline for Claude Code showing real-time rate limit usage, context window %, session cost, and git status with progress bars. Pairs well with this notification setup for a complete "walk away" workflow.
+
 ## Credits
 
 - [terminal-notifier](https://github.com/julienXX/terminal-notifier) by Julien Blanchard
