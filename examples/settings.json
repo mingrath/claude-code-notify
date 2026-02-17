@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 0.3 '$HOME/.claude/sounds/need-human.aiff'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay -v 0.3 '$HOME/.claude/sounds/finish.aiff'"
+          }
+        ]
+      }
+    ]
+  }
+}
