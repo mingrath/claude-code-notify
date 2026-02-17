@@ -1,36 +1,77 @@
+<div align="center">
+
 # Claude Code Notify
 
 **Get notified on your Mac, iPhone, and Apple Watch when Claude Code needs your input.**
 
-When running Claude Code in autonomous mode (YOLO mode), tasks can take minutes to complete. Instead of staring at the terminal, this setup sends push notifications to all your Apple devices — so you can walk away and get pinged the moment Claude needs a decision.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-macOS-lightgrey?logo=apple)](https://support.apple.com/macos)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-Compatible-blueviolet?logo=anthropic)](https://docs.anthropic.com/en/docs/claude-code)
+[![ntfy.sh](https://img.shields.io/badge/ntfy.sh-Push_Notifications-green)](https://ntfy.sh)
 
-## How It Works
+<br />
+
+When running Claude Code in autonomous mode, tasks can take minutes to complete.<br />
+Instead of staring at the terminal, get pinged the moment Claude needs a decision.
+
+<br />
+
+**Mac** &nbsp;·&nbsp; **iPhone** &nbsp;·&nbsp; **Apple Watch** &nbsp;·&nbsp; **Android**
+
+</div>
+
+<br />
+
+## The Problem
+
+You kick off Claude Code on a big task, and it runs autonomously for 5–15 minutes. You walk away to grab coffee, check your phone, or context-switch to something else. When you come back, Claude has been waiting for your input for the past 10 minutes. Time wasted.
+
+## The Solution
+
+This project sets up **three independent notification channels** so you never miss a prompt:
 
 ```
 Claude Code needs your input
   │
   ├──→ terminal-notifier  →  macOS Notification Center  →  Mac banner + sound
   │
-  ├──→ ntfy.sh (HTTP POST) →  ntfy server  →  ntfy app  →  iPhone  →  Apple Watch
+  ├──→ ntfy.sh (HTTP POST) →  ntfy server  →  ntfy app  →  iPhone / Apple Watch
   │
-  └──→ Claude Code hook    →  plays custom sound via afplay
+  └──→ Claude Code hook    →  plays custom alert sound via afplay
 ```
-
-Three independent notification channels ensure you never miss a prompt:
 
 | Channel | Reaches | Latency | Requires |
 |---------|---------|---------|----------|
 | `terminal-notifier` | Mac | Instant | macOS |
-| `ntfy.sh` | iPhone + Apple Watch | ~1-3s | ntfy app installed |
+| `ntfy.sh` | iPhone + Apple Watch + Android | ~1-3s | ntfy app |
 | Hook sound (`afplay`) | Mac speakers | Instant | Audio file |
+
+---
+
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Manual Setup](#manual-setup)
+  - [1. Install terminal-notifier](#step-1-install-terminal-notifier)
+  - [2. Set Up ntfy.sh](#step-2-set-up-ntfysh)
+  - [3. Configure CLAUDE.md](#step-3-configure-claude-code-claudemd)
+  - [4. Add Sound Hooks](#step-4-add-sound-hooks-optional)
+  - [5. Grant Permissions](#step-5-grant-permissions)
+- [Configuration Reference](#full-configuration-reference)
+- [Security Notes](#security-notes)
+- [Self-Hosting ntfy](#self-hosting-ntfy-optional)
+- [Troubleshooting](#troubleshooting)
+- [Related Projects](#related)
+
+---
 
 ## Prerequisites
 
 - macOS (Apple Silicon or Intel)
 - [Homebrew](https://brew.sh/)
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed
-- iPhone with [ntfy app](https://apps.apple.com/app/ntfy/id1625396347) (optional but recommended)
-- Apple Watch paired with iPhone (optional)
+- iPhone with [ntfy app](https://apps.apple.com/app/ntfy/id1625396347) or Android with [ntfy app](https://play.google.com/store/apps/details?id=io.heckel.ntfy) (optional but recommended)
+- Apple Watch paired with iPhone (optional — notifications mirror automatically)
 
 ## Quick Start
 
@@ -46,7 +87,15 @@ chmod +x setup.sh
 # 3. Follow the prompts to configure your ntfy topic name
 ```
 
-Or set it up manually — see below.
+The setup script will:
+- Install `terminal-notifier` and `ntfy` via Homebrew
+- Generate a unique topic name for you
+- Set up notification sound files
+- Output ready-to-paste config snippets
+
+Or follow the [manual setup](#manual-setup) below.
+
+---
 
 ## Manual Setup
 
@@ -79,10 +128,10 @@ brew install ntfy
 Your topic name acts like a private channel. Pick something unique and hard to guess:
 
 ```bash
-# Good: includes your name + random suffix
+# Good — includes your name + random suffix
 MY_TOPIC="yourname-claude-notify-x7k2"
 
-# Bad: too generic, anyone could subscribe
+# Bad — too generic, anyone could subscribe
 MY_TOPIC="claude-notifications"
 ```
 
@@ -118,7 +167,7 @@ terminal-notifier -title "Claude Code" -message "Your input is needed" -sound de
 ```
 ````
 
-> Replace `YOUR_TOPIC_NAME` with your chosen ntfy topic.
+> **Note:** Replace `YOUR_TOPIC_NAME` with your chosen ntfy topic.
 
 This tells Claude to run the notification command every time it needs your input.
 
@@ -132,7 +181,6 @@ Claude Code supports [hooks](https://docs.anthropic.com/en/docs/claude-code/hook
 mkdir -p ~/.claude/sounds
 
 # Use macOS built-in sounds, or add your own .mp3/.wav files
-# Example: copy system sounds
 cp /System/Library/Sounds/Ping.aiff ~/.claude/sounds/need-human.aiff
 cp /System/Library/Sounds/Glass.aiff ~/.claude/sounds/finish.aiff
 ```
@@ -191,6 +239,8 @@ Add `terminal-notifier` to your allowed commands in `~/.claude/settings.local.js
 
 This prevents Claude Code from prompting you to approve every notification command.
 
+---
+
 ## Full Configuration Reference
 
 Here's the complete setup across all config files:
@@ -205,29 +255,39 @@ Here's the complete setup across all config files:
     └── finish.aiff           # Played on Stop hook
 ```
 
+Example files are provided in the [`examples/`](examples/) directory — copy and adapt them.
+
+---
+
 ## How It Looks in Practice
 
 ```
-$ claude
+$ claude "refactor the auth module and add tests"
 
-> Claude is working autonomously...
-> [10 minutes pass, you're making coffee]
->
-> 🔔 Mac: notification banner pops up
-> 🔔 iPhone: push notification from ntfy
-> 🔔 Apple Watch: tap on wrist
-> 🔊 Mac: plays alert sound
->
-> You walk back and see:
-> "I've completed the refactor but need your input on
->  the database migration strategy. Should I..."
+  Claude is working autonomously...
+  ⏳ 10 minutes pass — you're making coffee
+
+  🔔 Mac:          notification banner pops up
+  📱 iPhone:       push notification from ntfy
+  ⌚ Apple Watch:  tap on your wrist
+  🔊 Mac speakers: alert sound plays
+
+  You walk back and see:
+  "I've completed the refactor but need your input on
+   the database migration strategy. Should I..."
 ```
+
+---
 
 ## Security Notes
 
-- **ntfy topics are public by default.** Anyone who knows your topic name can subscribe to it. Use a hard-to-guess name, or [self-host ntfy](https://docs.ntfy.sh/install/) for private use.
-- **No sensitive data is sent.** The notification message is generic ("Claude Code needs your input") and doesn't include code or context.
-- **terminal-notifier is local only.** Desktop notifications never leave your machine.
+| Concern | Status |
+|---------|--------|
+| ntfy topics are public by default | Use a hard-to-guess name or [self-host](#self-hosting-ntfy-optional) |
+| Sensitive data exposure | No code or context is sent — only a generic message |
+| terminal-notifier | Local only, never leaves your machine |
+
+---
 
 ## Self-Hosting ntfy (Optional)
 
@@ -237,15 +297,18 @@ For maximum privacy, run your own ntfy server:
 # Using Docker
 docker run -p 8080:80 binwiederhier/ntfy serve
 
-# Update your CLAUDE.md to use your server
+# Update your CLAUDE.md to point to your server instead
 # curl -d "message" http://localhost:8080/your-topic
 ```
 
 See the [ntfy self-hosting docs](https://docs.ntfy.sh/install/) for full setup instructions.
 
+---
+
 ## Troubleshooting
 
-### Notifications not showing on Mac
+<details>
+<summary><strong>Notifications not showing on Mac</strong></summary>
 
 ```bash
 # Check terminal-notifier is installed
@@ -255,7 +318,10 @@ which terminal-notifier
 # System Settings → Notifications → terminal-notifier → Allow Notifications
 ```
 
-### ntfy not reaching iPhone
+</details>
+
+<details>
+<summary><strong>ntfy not reaching iPhone</strong></summary>
 
 ```bash
 # Test the topic directly
@@ -267,7 +333,10 @@ curl -d "test" ntfy.sh/your-topic-name
 # - Is Do Not Disturb off?
 ```
 
-### No sound playing
+</details>
+
+<details>
+<summary><strong>No sound playing</strong></summary>
 
 ```bash
 # Test afplay manually
@@ -277,11 +346,18 @@ afplay -v 0.3 /System/Library/Sounds/Ping.aiff
 ls -la ~/.claude/sounds/
 ```
 
-### Apple Watch not getting notifications
+</details>
+
+<details>
+<summary><strong>Apple Watch not getting notifications</strong></summary>
 
 - Ensure the ntfy app is installed on iPhone (not just Watch)
 - Check iPhone → Watch app → Notifications → ntfy is enabled
 - Apple Watch only shows notifications when iPhone is locked
+
+</details>
+
+---
 
 ## Related
 
@@ -295,4 +371,4 @@ ls -la ~/.claude/sounds/
 
 ## License
 
-MIT
+[MIT](LICENSE)
