@@ -16,6 +16,10 @@ Instead of staring at the terminal, get pinged the moment Claude needs a decisio
 
 <br />
 
+![Demo](demo.svg)
+
+<br />
+
 **Mac** &nbsp;·&nbsp; **iPhone** &nbsp;·&nbsp; **Apple Watch** &nbsp;·&nbsp; **Android**
 
 </div>

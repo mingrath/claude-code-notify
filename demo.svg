@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="460" viewBox="0 0 800 460">
+  <defs>
+    <style>
+      .bg { fill: #1e1e2e; }
+      .chrome { fill: #313244; }
+      .dot-red { fill: #f38ba8; }
+      .dot-yellow { fill: #f9e2af; }
+      .dot-green { fill: #a6e3a1; }
+      .title { fill: #cdd6f4; font-family: 'SF Pro Display', 'Helvetica Neue', sans-serif; font-size: 13px; }
+      text { font-family: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', monospace; font-size: 13px; }
+      .white { fill: #cdd6f4; }
+      .gray { fill: #6c7086; }
+      .green { fill: #a6e3a1; }
+      .cyan { fill: #89dceb; }
+      .yellow { fill: #f9e2af; }
+      .mauve { fill: #cba6f7; }
+      .red { fill: #f38ba8; }
+      .blue { fill: #89b4fa; }
+      .peach { fill: #fab387; }
+      .dim { fill: #585b70; }
+      .notif-bg { fill: #2a2a3c; rx: 10; ry: 10; }
+      .notif-border { fill: none; stroke: #45475a; stroke-width: 1; rx: 10; ry: 10; }
+    </style>
+  </defs>
+
+  <!-- Terminal window -->
+  <rect class="bg" width="800" height="460" rx="10" ry="10"/>
+
+  <!-- Title bar -->
+  <rect class="chrome" width="800" height="38" rx="10" ry="10"/>
+  <rect class="chrome" x="0" y="20" width="800" height="18"/>
+
+  <!-- Window dots -->
+  <circle class="dot-red" cx="20" cy="19" r="6"/>
+  <circle class="dot-yellow" cx="40" cy="19" r="6"/>
+  <circle class="dot-green" cx="60" cy="19" r="6"/>
+
+  <!-- Title -->
+  <text class="title" x="400" y="24" text-anchor="middle">claude-code-notify</text>
+
+  <!-- Terminal content -->
+  <!-- Line 1: prompt -->
+  <text y="68" x="16">
+    <tspan class="green">~</tspan>
+    <tspan class="mauve"> claude</tspan>
+    <tspan class="white"> "refactor the auth module and add comprehensive tests"</tspan>
+  </text>
+
+  <!-- Line 2: working -->
+  <text y="92" x="16">
+    <tspan class="dim">  Claude is working autonomously...</tspan>
+  </text>
+
+  <!-- Line 3: blank -->
+
+  <!-- Line 4: time indicator -->
+  <text y="120" x="16">
+    <tspan class="yellow">  [12 min]</tspan>
+    <tspan class="gray"> Claude needs your input</tspan>
+  </text>
+
+  <!-- Line 5: notification trigger -->
+  <text y="148" x="16">
+    <tspan class="cyan">  ></tspan>
+    <tspan class="white"> terminal-notifier -title "Claude Code" -message "Input needed"</tspan>
+  </text>
+
+  <!-- Line 6: ntfy -->
+  <text y="172" x="16">
+    <tspan class="cyan">  ></tspan>
+    <tspan class="white"> curl -d "Claude Code needs your input" ntfy.sh/</tspan>
+    <tspan class="peach">my-topic</tspan>
+  </text>
+
+  <!-- Line 7: afplay -->
+  <text y="196" x="16">
+    <tspan class="cyan">  ></tspan>
+    <tspan class="white"> afplay ~/.claude/sounds/need-human.aiff</tspan>
+  </text>
+
+  <!-- Line 8: blank -->
+
+  <!-- Success indicators -->
+  <text y="228" x="16">
+    <tspan class="green">  ✓</tspan>
+    <tspan class="white"> macOS notification sent</tspan>
+  </text>
+  <text y="252" x="16">
+    <tspan class="green">  ✓</tspan>
+    <tspan class="white"> Push notification sent to iPhone + Apple Watch</tspan>
+  </text>
+  <text y="276" x="16">
+    <tspan class="green">  ✓</tspan>
+    <tspan class="white"> Alert sound played</tspan>
+  </text>
+
+  <!-- Separator -->
+  <text y="304" x="16">
+    <tspan class="dim">  ─────────────────────────────────────────────────────</tspan>
+  </text>
+
+  <!-- macOS notification mockup -->
+  <rect x="470" y="320" width="310" height="80" rx="12" ry="12" fill="#313244" stroke="#45475a" stroke-width="1"/>
+
+  <!-- Notification icon area -->
+  <rect x="482" y="335" width="32" height="32" rx="8" ry="8" fill="#585b70"/>
+  <text x="490" y="357" class="white" style="font-size: 16px; font-family: 'SF Pro Display', sans-serif;">CC</text>
+
+  <!-- Notification text -->
+  <text x="524" y="349" style="font-family: 'SF Pro Display', 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: bold;" class="white">Claude Code</text>
+  <text x="524" y="369" style="font-family: 'SF Pro Display', 'Helvetica Neue', sans-serif; font-size: 12px;" class="gray">Your input is needed — auth module refactor</text>
+  <text x="710" y="349" style="font-family: 'SF Pro Display', 'Helvetica Neue', sans-serif; font-size: 11px;" class="dim">now</text>
+
+  <!-- Claude prompt -->
+  <text y="340" x="16">
+    <tspan class="mauve">  Claude:</tspan>
+    <tspan class="white"> I've completed the refactor but need your</tspan>
+  </text>
+  <text y="364" x="16">
+    <tspan class="white">  input on the database migration strategy.</tspan>
+  </text>
+  <text y="388" x="16">
+    <tspan class="white">  Should I use a </tspan>
+    <tspan class="cyan">gradual migration</tspan>
+    <tspan class="white"> or </tspan>
+    <tspan class="cyan">full cutover</tspan>
+    <tspan class="white">?</tspan>
+  </text>
+
+  <!-- Cursor -->
+  <text y="420" x="16">
+    <tspan class="green">~</tspan>
+    <tspan class="mauve"> ></tspan>
+    <tspan class="white"> </tspan>
+    <tspan class="white">█</tspan>
+  </text>
+</svg>
